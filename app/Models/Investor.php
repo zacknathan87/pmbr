@@ -1,0 +1,20 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Investor extends Model
+{
+    //
+    
+    protected $fillable = [];
+
+    protected $dates = [];
+
+    protected $guarded = [];
+
+    public static $rules = [
+        // Validation rules
+    ];
+}

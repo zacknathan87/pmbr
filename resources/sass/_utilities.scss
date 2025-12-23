@@ -1,0 +1,274 @@
+// Corporate Utility Classes
+.corporate-card {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.corporate-card-hover {
+  @extend .corporate-card;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: #00A3E0;
+  }
+}
+
+.corporate-input {
+  background: #ffffff;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  color: #333333;
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: #00A3E0;
+    box-shadow: 0 0 0 2px rgba(0, 163, 224, 0.1);
+    background: #ffffff;
+  }
+
+  &::placeholder {
+    color: #6c757d;
+  }
+}
+
+// Button Variants
+.btn-primary-cyber {
+  background: $gradient-primary;
+  border: none;
+  border-radius: $border-radius;
+  color: $primary-dark;
+  font-weight: 600;
+  padding: 12px 24px;
+  transition: all $transition-fast;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0, 212, 255, 0.3);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+.btn-premium {
+  background: $gradient-premium;
+  border: none;
+  border-radius: $border-radius;
+  color: $primary-dark;
+  font-weight: 600;
+  padding: 12px 24px;
+  transition: all $transition-fast;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+  }
+}
+
+.btn-success-cyber {
+  background: $gradient-success;
+  border: none;
+  border-radius: $border-radius;
+  color: $primary-dark;
+  font-weight: 600;
+  padding: 12px 24px;
+  transition: all $transition-fast;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+  }
+}
+
+.btn-outline-cyber {
+  background: transparent;
+  border: 2px solid $accent-primary;
+  border-radius: $border-radius;
+  color: $accent-primary;
+  font-weight: 600;
+  padding: 10px 22px;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $accent-primary;
+    color: $primary-dark;
+    transform: translateY(-1px);
+  }
+}
+
+// Text Utilities
+.text-cyber {
+  color: $accent-primary;
+}
+
+.text-premium {
+  color: $accent-premium;
+}
+
+.text-success-cyber {
+  color: $accent-success;
+}
+
+// Glow Effects
+.glow-primary {
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+}
+
+.glow-premium {
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+.glow-success {
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+// Animation Classes
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+// Spacing Utilities
+.mb-20 {
+  margin-bottom: 1.25rem;
+}
+
+.mb-30 {
+  margin-bottom: 1.875rem;
+}
+
+.mt-20 {
+  margin-top: 1.25rem;
+}
+
+.p-20 {
+  padding: 1.25rem;
+}
+
+.p-30 {
+  padding: 1.875rem;
+}
+
+// Layout Utilities
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.grid-auto-fit {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+// Corporate Theme Overrides
+body {
+  background: #ffffff;
+  color: #333333;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+// Override Element UI colors
+.el-button--primary {
+  background: linear-gradient(135deg, #00A3E0 0%, #0077b6 100%);
+  border-color: #00A3E0;
+  color: #ffffff;
+
+  &:hover {
+    background: linear-gradient(135deg, #0077b6 0%, #00A3E0 100%);
+    border-color: #0077b6;
+  }
+}
+
+.el-input__inner {
+  @extend .corporate-input;
+}
+
+.el-card {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  color: #333333;
+
+  .el-card__header {
+    background: transparent;
+    border-bottom: 1px solid #e9ecef;
+    color: #333333;
+  }
+}
+
+.el-form-item__label {
+  color: #495057;
+}
+
+.el-alert {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.2);
+  border-radius: $border-radius;
+  color: #ff6b6b;
+
+  &.el-alert--success {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: rgba(0, 255, 136, 0.2);
+    color: $accent-success;
+  }
+
+  &.el-alert--warning {
+    background: rgba(255, 170, 0, 0.1);
+    border-color: rgba(255, 170, 0, 0.2);
+    color: $accent-warning;
+  }
+}

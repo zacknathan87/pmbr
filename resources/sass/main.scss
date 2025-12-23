@@ -1,0 +1,565 @@
+body {
+    
+     // background: url(/images/bg2.png);
+      background-position: bottom-left;
+      background-size: auto;
+      background-repeat: no-repeat;
+      background-color: #fff0;
+}
+
+.backdrop-bg {
+    background: rgba(0, 0, 0, 0.2);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.app-bg {
+    background: #f8f9fa;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+    z-index: -1;
+}
+
+.app-container {
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.app-container.container-full {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+}
+
+.app-view {
+    margin: 0 auto;
+    position: relative;
+    overflow: auto;
+    min-height: 100vh;
+}
+
+#main {
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    overflow: auto;
+    min-height: 100vh;
+    padding: 0 0 59px 0;
+    z-index: 1;
+}
+
+.bottom-nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.main-content {
+    width: 100%;
+    position: relative;
+    min-height: calc(100vh - 124px);
+    height: auto;
+}
+
+.main-content.full-width {
+    width: 100%;
+    max-width: none;
+}
+
+.page-content {
+    padding: 20px 2px;
+    width: 100%;
+    position: relative;
+    min-height: 100%;
+    height: auto;
+}
+
+.loader {
+    width: 100%;
+    right: 0;
+    left: 0;
+    top: 0;
+    position: absolute;
+    min-height: calc(100vh - 124px);
+}
+
+.play-loader {
+    width: 100%;
+    right: 0;
+    left: 0;
+    top: 0;
+    position: absolute;
+    min-height: calc(100vh - 65px);
+}
+
+.bottom-nav li {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.bottom-nav li a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex: 1;
+    color: #000;
+    text-align: center;
+    min-height: 60px;
+    text-decoration: none;
+    font-size: 10px;
+    text-transform: uppercase;
+    transition: all ease 0.2s;
+}
+
+.bottom-nav li.router-link-active a {
+    color: #01A89E;
+}
+
+.router-link-active .menu-icon {
+  margin-top: -20px;
+  background: #f8f9fa;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(1, 168, 158, 0.6);
+}
+
+.bottom-nav li a:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.bottom-nav li a i {
+    font-size: 22px;
+}
+
+.bottom-nav li a span {
+    padding-top: 3px;
+}
+
+.el-message-box {
+    width: 90% !important;
+    max-width: 420px !important;
+}
+
+.frm-bet-input {
+    form {
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+
+        .el-form-item {
+            flex-grow: 1;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            .el-form-item__content button {
+                transition: all ease 0.2s;
+            }
+
+            &.is-error .el-form-item__content button {
+                border-color: #f56c6c;
+            }
+        }
+    }
+
+    .el-radio__input {
+        display: none !important;
+    }
+
+    .el-radio.is-checked {
+        background: #409eff;
+    }
+
+    .el-radio {
+        transition: all ease 0.2s;
+        margin: 5px !important;
+    }
+
+    .el-radio__input.is-checked + .el-radio__label {
+        color: #fff !important;
+    }
+
+    .el-dialog--center .el-dialog__body {
+        padding: 15px !important;
+    }
+
+    .el-form--inline .el-form-item {
+        max-width: 150px;
+        vertical-align: bottom;
+    }
+
+    .el-form-item__label {
+        line-height: 1;
+        padding: 0;
+        margin: 0;
+    }
+
+    .el-form--label-top .el-form-item__label {
+        padding: 0;
+        font-size: 13px;
+        margin-top: -5px;
+    }
+}
+
+.bet-radio-case {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .bet-radio {
+        border: 1px solid #dddfe6;
+        background: #eee;
+        border-radius: 4px;
+        text-align: center;
+        flex: 1 0 30%;
+        max-width: 104px;
+        line-height: 1;
+        margin: 5px;
+        transition: all ease 0.2s;
+        padding: 5px !important;
+        height: auto !important;
+        margin-left: 5px !important;
+
+        .el-checkbox__label {
+            padding-left: 0 !important;
+        }
+        .el-checkbox__input {
+            display: none;
+        }
+
+        .odd {
+            color: #de1a36;
+        }
+        &.number {
+            flex: 1 0 21%;
+            max-width: 74px;
+        }
+
+        .el-radio__label {
+            font-size: 15px !important;
+            padding-left: 0 !important;
+        }
+
+        &:hover {
+            background: #dddfe6;
+        }
+
+        &.is-checked {
+            border: 1px solid #409eff;
+            background: #409eff;
+            color: #000;
+        }
+    }
+}
+
+.box-img-cover {
+    height: 236px;
+    background-size: cover;
+    background-position: center;
+}
+
+
+
+.ratio-title {
+    text-align: center;
+    font-size: 18px;
+    padding: 0 0 10px 0;
+    color: #01A89E;
+    margin-top: -15px;
+}
+
+.bet-closed {
+    background: #919399;
+    color: #000;
+    font-size: 18px;
+    height: 100%;
+    margin: -15px;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-btn-case {
+    margin-bottom: 15px;
+}
+
+.vip-tag {
+    color: #fff;
+    background: #4776e6;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+    padding: 4px 7px 2px;
+    vertical-align: middle;
+    line-height: 1;
+}
+
+.el-card {
+    background: #eee !important;
+}
+
+// .el-card {
+//     background: rgba(0,0,0,0.6) !important;
+//     color: #fff !important;
+//     border-color:  #874d00 !important;
+//     border-radius: 8px !important;
+
+//     .el-card__header {
+//         color: #4776E6 !important;
+//         border-color:  #874d00 !important;
+//     }
+// }
+
+.rotate-n-15 {
+    transform: rotate(-15deg);
+}
+
+.game-type-thumbnail {
+    max-width: 120px;
+    width: 100%;
+    display: block;
+    margin: 0 auto;
+    border-radius: 7px;
+}
+
+.nogame {
+    display: flex;
+    height: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+    color: #ccc;
+    font-size: 18px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.nogame-body {
+    margin-top: 30px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 25px;
+    max-width: 300px;
+    border-radius: 10px;
+}
+
+.nogame-title {
+    text-align: center;
+    font-size: 40px;
+    color: #ddd;
+}
+
+.nogame-title i {
+    font-size: 60px;
+}
+
+.box-card {
+    border-radius: 10px !important;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
+
+.ball {
+    padding: 4px;
+    border-radius: 50%;
+    background: #333;
+    color: #000;
+    width: 30px;
+    margin: 0 3px 3px;
+    height: 30px;
+    text-align: center;
+    box-shadow: -5px -5px 0px rgb(0 0 0 / 20%) inset;
+}
+
+.mini-ball {
+    border-radius: 50%;
+    background: #333;
+    color: #000;
+    width: 13px;
+    margin: 0px 3px 1px;
+    height: 13px;
+    box-shadow: -3px -3px 0px rgb(0 0 0 / 20%) inset;
+    display: inline-block;
+    vertical-align: middle;
+}
+.ball-1 {
+    background: #fcd832; /* fallback for old browsers */
+}
+.ball-2 {
+    background: #e93f33;
+}
+.ball-3 {
+    background: #0c2180;
+    color: #fff;
+}
+.ball-4 {
+    background: #7ef21b;
+}
+.ball-5 {
+    background: #4fc0fb;
+}
+.ball-6 {
+    background: #326504;
+    color: #fff;
+}
+.ball-7 {
+    background: #af3460;
+    color: #fff;
+}
+.ball-8 {
+    background: #713ad0;
+    color: #fff;
+}
+.ball-9 {
+    background: #b7551a;
+    color: #fff;
+}
+.ball-10 {
+    background: #000000;
+    color: #fff;
+}
+
+.el-input.is-disabled .el-input__inner {
+    background: #fff !important;
+    color: #000 !important;
+}
+
+.banner-case {
+    border-radius: 15px;
+    margin-bottom: 20px;
+}
+.banner {
+    overflow: hidden;
+}
+
+.banner-item {
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+    max-height: 200px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.page-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #fff;
+}
+
+.box {
+    border-radius: 20px;
+    box-shadow: 0px 3px 5px 2px rgba(0, 0, 0, 0.2);
+    background: #ffffff;
+    //background: -webkit-linear-gradient(135deg, #0281F0, #8E0E00, #1F1C18);  /* Chrome 10-25, Safari 5.1-6 */
+    //background: linear-gradient(135deg, #0281F0,  #8E0E00, #1F1C18); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+    color: #fff;
+
+}
+
+.box2 {
+    border-radius: 20px;
+    box-shadow: 0px 3px 5px 2px rgba(0, 0, 0, 0.2);
+    background: #ff3131;  /* fallback for old browsers */
+    //background: -webkit-linear-gradient(135deg, #0281F0, #8E0E00, #1F1C18);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to left, #ff3131 , #1CBDEB); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    
+   
+
+}
+
+
+.box-header {
+    padding: 10px;
+    border-bottom: 1px solid #1b1d27;
+}
+
+.box-title {
+    font-size: 20px;
+    padding: 15px;
+    color: #01A89E;
+}
+
+
+.box-body {
+    padding: 15px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.fetching {
+    color: #eee;
+}
+
+.el-button--primary {
+    color: #fff;
+    background-color: #01A89E;
+    border-color: #01A89E;
+
+}
+.el-button--primary:focus,
+.el-button--primary:hover {
+    background: #017f7a;
+    border-color: #017f7a;
+    color: #fff;
+}
+.el-button--primary.is-active,
+.el-button--primary:active {
+    background: #015a55;
+    border-color: #015a55;
+    color: #fff;
+}
+
+// Global Element UI Dialog Glassmorphism Styles
+.el-dialog {
+}
+
+.el-dialog__wrapper {
+}
+
+.el-dialog__header {
+  position: relative;
+}
+
+.el-dialog__title {
+}
+
+.el-dialog__body {
+}
+
+.el-dialog__footer {
+}
+
+// Override Element UI's default white background
+.el-dialog, .el-dialog__header, .el-dialog__body, .el-dialog__footer {
+}
+
+// Ensure the dialog wrapper has the glassmorphism effect
+.v-modal {
+}

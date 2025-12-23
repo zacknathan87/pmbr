@@ -1,0 +1,27 @@
+{
+  "name": "Republic",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces",
+  "initializeCommand": "mkdir -p ~/.vscode-server-republic",
+  "mounts": [
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "bradlc.vscode-tailwindcss",
+        "ms-vscode.vscode-json",
+        "esbenp.prettier-vscode",
+        "Vue.volar",
+        "ms-vscode.vscode-eslint",
+        "formulahendry.auto-rename-tag",
+        "christian-kohler.path-intellisense",
+        "RooVeterinaryInc.roo-cline"
+      ]
+    }
+  },
+  "postCreateCommand": "sudo chown -R vscode:vscode /workspaces /home/vscode && composer install && bun install",
+  "remoteUser": "vscode"
+}

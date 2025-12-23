@@ -1,0 +1,83 @@
+// PMBR (Petro Malaysia Bid Round) - Corporate Design System
+
+// Body
+$body-bg: #ffffff; // Clean white background
+$body-bg-gradient: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+
+// Typography - Professional Corporate Fonts
+$font-family-sans-serif: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+$font-family-mono: 'JetBrains Mono', monospace;
+$font-size-base: 1rem;
+$line-height-base: 1.6;
+
+// Primary Colors - PMBR Corporate Palette (Teal Theme)
+$primary: #01a89e;            // PMBR Teal (primary brand color)
+$primary-dark: #016f68;       // Darker teal for hover states
+$primary-light: #2dd4bf;      // Lighter teal for backgrounds
+$secondary: #f8f9fa;          // Light gray (cards/containers)
+$accent-primary: #01a89e;     // Emerald Green (CTAs, highlights)
+$accent-secondary: #016f68;   // Deep Teal (secondary elements)
+$accent-premium: #ffd700;     // Gold (wins, premium features)
+$accent-success: #28a745;     // Green (success states)
+$accent-warning: #ffc107;     // Amber (alerts)
+$accent-danger: #dc3545;      // Red (errors)
+
+// Text Colors - Clean Hierarchy
+$text-primary: #333333;       // Dark text for readability
+$text-secondary: #666666;     // Medium gray for secondary text
+$text-muted: #999999;         // Light gray for muted text
+$text-accent: #01a89e;        // Teal accent text
+$text-on-primary: #ffffff;      // White text on teal backgrounds
+$text-on-dark: #ffffff;        // White text on dark backgrounds
+
+// Legacy Bootstrap Colors (updated for corporate theme)
+$blue: #01a89e;
+$indigo: #4c5fd5;
+$purple: #a855f7;
+$pink: #f472b6;
+$red: #dc3545;
+$orange: #fd7e14;
+$yellow: #ffc107;
+$green: #28a745;
+$teal: #01a89e;
+$cyan: #17a2b8;
+
+// Clean Design Variables (Modern Corporate)
+$card-bg: #ffffff;
+$card-border: #e9ecef;
+$card-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+$card-hover-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+
+// Gradients - Professional & Subtle
+$gradient-primary: linear-gradient(135deg, #01a89e 0%, #016f68 100%);
+$gradient-secondary: linear-gradient(135deg, #01a89e 0%, #016f68 100%);
+$gradient-accent: linear-gradient(135deg, #01a89e 0%, #016f68 100%);
+$gradient-premium: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+$gradient-success: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+$gradient-background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+
+// Spacing & Border Radius - Clean and Consistent
+$border-radius: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+$border-radius-2xl: 20px;
+$border-radius-pill: 50px;
+
+// Transitions - Smooth but Professional
+$transition-fast: 0.15s ease-in-out;
+$transition-normal: 0.3s ease-in-out;
+$transition-slow: 0.5s ease-in-out;
+
+// Shadows - Professional Depth
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.12);
+$shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.15);
+$shadow-xl: 0 12px 40px rgba(0, 0, 0, 0.2);
+$shadow-glow: 0 0 0 20px rgba(1, 168, 158, 0.3);
+
+// Z-Index Layers
+$z-dropdown: 1000;
+$z-sticky: 1020;
+$z-modal: 2000;
+$z-tooltip: 3000;
+$z-toast: 4000;

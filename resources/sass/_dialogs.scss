@@ -1,0 +1,54 @@
+// Global Element UI Dialog Glassmorphism Styles
+.el-dialog {
+  background: rgba(26, 26, 46, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37) !important;
+  overflow: hidden !important;
+}
+
+.el-dialog__wrapper {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}
+
+.el-dialog__header {
+  background: rgba(0, 212, 255, 0.05) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 24px 24px 16px !important;
+  position: relative;
+}
+
+.el-dialog__title {
+  color: #00d4ff !important;
+  font-weight: 700 !important;
+  font-size: 1.5rem !important;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.3) !important;
+}
+
+.el-dialog__body {
+  padding: 24px !important;
+  color: #ffffff !important;
+  background: rgba(26, 26, 46, 0.5) !important;
+}
+
+.el-dialog__footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  padding: 16px 24px 24px !important;
+  background: rgba(26, 26, 46, 0.7) !important;
+}
+
+// Override Element UI's default white background
+.el-dialog, .el-dialog__header, .el-dialog__body, .el-dialog__footer {
+  background-color: transparent !important;
+}
+
+// Ensure the dialog wrapper has the glassmorphism effect
+.v-modal {
+  background: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(5px) !important;
+  -webkit-backdrop-filter: blur(5px) !important;
+}

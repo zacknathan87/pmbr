@@ -1,0 +1,251 @@
+html,
+body {
+    height: 100%;
+    min-height: 100%;
+    font-size: 15px;
+    color: #222;
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination {
+    margin: 2px 0;
+    white-space: nowrap;
+    justify-content: flex-end;
+}
+
+.sidebar .nav-item .nav-link span {
+    font-size: 15px;
+}
+
+.sidebar .nav-item .collapse .collapse-inner .collapse-item,
+.sidebar .nav-item .collapsing .collapse-inner .collapse-item {
+    font-size: 13px;
+}
+
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #222;
+}
+
+.btn-middle {
+    width: 100%;
+    max-width: 150px;
+    margin: 0 auto;
+}
+
+.badge-100 {
+    font-size: 90%;
+}
+
+.form-error {
+    color: #b54c4d;
+}
+
+.error {
+    font-size: 14px;
+}
+
+.btn.is-loading {
+    color: transparent !important;
+    pointer-events: none;
+    position: relative;
+    opacity: 0.8;
+}
+
+.btn.is-loading:after {
+    -webkit-animation: spinAround 0.5s infinite linear;
+    animation: spinAround 0.5s infinite linear;
+    border: 2px solid #fff;
+    border-radius: 290486px;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    content: "";
+    display: block;
+    height: 1em;
+    position: relative;
+    width: 1em;
+    left: calc(50% - (1em / 2));
+    top: calc(50% - (1em / 2));
+    position: absolute !important;
+}
+
+@keyframes spinAround {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+.jconfirm.jconfirm-white .jconfirm-bg,
+.jconfirm.jconfirm-light .jconfirm-bg {
+    background-color: #000;
+    opacity: 0.5;
+}
+
+.confirm-value {
+    font-size: 18px;
+}
+
+.mb-40 {
+    margin-bottom: 40px;
+}
+
+.answer-pill {
+    background: #eee;
+    border: 1px solid #ddd;
+    padding: 0 7px;
+    margin: 4px;
+    text-align: center;
+    border-radius: 3px;
+}
+
+form.user .form-control-user {
+    font-size: 14px;
+}
+
+.tag {
+    padding: 2px 5px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.bet-box {
+    border: 1px solid #4F73DF;
+    border-radius: 5px;
+    margin: 6px;
+}
+
+.bet-header {
+    padding:5px 10px;
+    color: #fff;
+    background: #4F73DF;
+    text-align: center;
+    font-weight: bold;
+}
+
+.bet-box.winning .bet-header {
+}
+
+.bet-body {
+    padding: 10px;
+}
+
+.bet-detail {
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+.bet-no {
+    margin-bottom: 9px;
+}
+.bet-no span {
+    font-size: 26px;
+    margin-left: 5px;
+    line-height: 1;
+}
+.bet-no sup {
+}
+
+.bet-total {
+    line-height: 1.2;
+    font-size: 13px;
+    vertical-align: middle;
+}
+
+.bet-box.winning {
+    background-color: #fcc202;
+}
+
+
+.bet-box.no-bet {
+    border: 1px solid #999;
+}
+
+.bet-box.no-bet .bet-header {
+    background: #999;
+}
+
+.text-type-36,
+.text-type-37 {
+    padding: 2px 4px;
+    width: 20px;
+    height: 20px;
+    line-height: 1;
+    text-align: center;
+    border-radius: 20px;
+    font-size: 12px;
+    background: #fff;
+    box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.text-type-36 {
+    border: 2px solid #1dc98a;
+    color: #1dc98a;
+}
+
+.text-type-37 {
+    border: 2px solid #e84b3c;
+    color: #e84b3c;
+}
+
+.game-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+.game-title {
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.game-details {
+}
+.game-detail-row {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+.game-label {
+  font-size: 12px;
+  font-weight: bold;
+}
+.game-value {
+  font-size: 16px;
+}
+.game-date {
+  font-size: 14px;
+}
+
+.game-btn {
+  padding: 3px 5px;
+  line-height: 1;
+}
+
+.badge-timer {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.btn-card-header {
+    position: absolute;
+    right: 15px;
+    top: 11px;
+}
+
+.thumbs {
+    max-width: 150px;
+    display: block;
+}
+
+.thumbs img {
+    width: 100%;
+}
+
+.winning-no-list {
+    font-size:16px
+}
