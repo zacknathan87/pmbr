@@ -45,7 +45,7 @@ window.Echo = new Echo({
     wsPort: window.location.port ? parseInt(window.location.port, 10) : 80,
     wssPort: window.location.port ? parseInt(window.location.port, 10) : 443,
     // Laravel Websockets uses /laravel-websockets as the path prefix
-    path: '/laravel-websockets',
+    wsPath: '/laravel-websockets',
     disableStats: true,
     enabledTransports: ['ws', 'wss'],
     forceTLS: window.location.protocol === 'https:'
