@@ -47,6 +47,6 @@ window.Echo = new Echo({
     // Laravel Websockets uses /laravel-websockets as the path prefix
     wsPath: '/laravel-websockets',
     disableStats: true,
-    enabledTransports: ['ws', 'wss'],
-    forceTLS: window.location.protocol === 'https:'
+    enabledTransports: ['wss'],
+    encrypted: true
 });
