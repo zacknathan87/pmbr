@@ -49,7 +49,8 @@ return [
      * Leave this empty if you want to accept requests from all hosts.
      */
     'allowed_origins' => [
-        //
+        'https://pmbrplus.com',
+        'http://pmbrplus.com',
     ],
 
     /*
