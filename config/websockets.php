@@ -51,6 +51,8 @@ return [
     'allowed_origins' => [
         'https://pmbrplus.com',
         'http://pmbrplus.com',
+        'https://pmbrplus.com:8443',
+        'http://pmbrplus.com:8443',
     ],
 
     /*
