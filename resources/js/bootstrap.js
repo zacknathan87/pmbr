@@ -44,7 +44,8 @@ window.Echo = new Echo({
     // If no port is present (80/443), fall back to the protocol default.
     wsPort: window.location.port ? parseInt(window.location.port, 10) : 80,
     wssPort: window.location.port ? parseInt(window.location.port, 10) : 443,
-    // Let pusher-js use its default WebSocket path (/app/{appKey}).
+    // Laravel Websockets uses /laravel-websockets as the path prefix
+    path: 'laravel-websockets',
     disableStats: true,
     enabledTransports: ['ws', 'wss'],
     forceTLS: window.location.protocol === 'https:'
