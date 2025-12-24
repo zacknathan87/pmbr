@@ -14,35 +14,47 @@
           <div class="welcome-content">
             <h1 class="welcome-title">Welcome back, {{ this.$auth.user().name }}</h1>
             <p class="welcome-subtitle">Manage your investment portfolio and track your performance</p>
+            <div class="welcome-metrics">
+              <div class="metric">
+                <span class="metric-label">Username</span>
+                <span class="metric-value username-with-rank">
+                  {{ this.$auth.user().username }}
+                  <span
+                    class="rank-badge"
+                    :class="['rank-' + (this.$auth.user().rank.id || 1)]"
+                    v-if="this.$auth.user().rank"
+                  >
+                    <i :class="(this.$auth.user().rank.id && this.$auth.user().rank.id > 1) ? 'fas fa-check-circle verified-icon' : 'fas fa-star normal-icon'"></i>
+                    <span class="rank-name">{{ this.$auth.user().rank.level_name || 'Bronze' }}</span>
+                  </span>
+                </span>
+              </div>
+              <div class="metric">
+                <span class="metric-label">Portfolio Balance</span>
+                <span class="metric-value positive">{{ this.$auth.user().country.currency }}{{ this.$auth.user().wallet.balance }}</span>
+              </div>
+            </div>
+
             <div class="user-status">
               <div class="status-indicator">
                 <div class="status-dot"></div>
                 <span>Account Active</span>
               </div>
             </div>
+
           </div>
           <div class="welcome-avatar">
             <div class="avatar-circle">
               <i class="fas fa-user"></i>
             </div>
           </div>
+          
+       
         </div>
       </div>
 
       <!-- Account Overview -->
       <div class="account-overview">
-        <div class="overview-card">
-          <div class="card-icon">
-            <i class="fas fa-wallet"></i>
-          </div>
-          <div class="card-content">
-            <h3>Portfolio Balance</h3>
-            <div class="balance-amount">
-              {{ this.$auth.user().country.currency }}{{ this.$auth.user().wallet.balance }}
-            </div>
-            <p class="card-description">Available for investment</p>
-          </div>
-        </div>
 
         <div class="overview-card">
           <div class="card-icon">
@@ -56,25 +68,7 @@
             <p class="card-description">Lifetime investment amount</p>
           </div>
         </div>
-
-        <div class="overview-card">
-          <div class="card-icon">
-            <i class="fas fa-user"></i>
-          </div>
-          <div class="card-content">
-            <h3>Account Details</h3>
-            <div class="account-info">
-              <div class="info-item">
-                <span class="info-label">Username:</span>
-                <span class="info-value">{{ this.$auth.user().username }}</span>
-              </div>
-              <div class="info-item">
-                <span class="info-label">Member ID:</span>
-                <span class="info-value">#{{ this.$auth.user().id }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
+      
       </div>
 
       <!-- <div class="referral-box">
@@ -237,6 +231,144 @@ export default {
 
 
 <style scoped>
+/* Welcome metrics */
+.welcome-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem 1.25rem;
+  margin: 0.75rem 0 0.75rem;
+}
+
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.metric-label {
+  font-size: 0.85rem;
+  color: #b0b0b0;
+  margin-bottom: 0.2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metric-value {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.metric-value.positive {
+  color: #00ff88;
+}
+
+/* Rank badge next to username */
+.username-with-rank {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+.verified-icon {
+  color: #3897f0;
+  text-shadow: 0 0 6px rgba(56, 151, 240, 0.35);
+}
+
+.normal-icon {
+  color: #cd7f32;
+}
+
+.rank-name {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.2px;
+}
+
+/* Rank-specific colorization */
+.rank-badge.rank-1 {
+  background: rgba(205, 127, 50, 0.12);
+  border-color: rgba(205, 127, 50, 0.45);
+}
+
+.rank-badge.rank-1 .normal-icon {
+  color: #cd7f32;
+}
+
+.rank-badge.rank-2 {
+  background: rgba(192, 192, 192, 0.12);
+  border-color: rgba(192, 192, 192, 0.45);
+}
+
+.rank-badge.rank-2 .verified-icon {
+  color: #c0c0c0;
+}
+
+.rank-badge.rank-3 {
+  background: rgba(255, 215, 0, 0.12);
+  border-color: rgba(255, 215, 0, 0.45);
+}
+
+.rank-badge.rank-3 .verified-icon {
+  color: #ffd700;
+}
+
+.rank-badge.rank-4 {
+  background: rgba(229, 228, 226, 0.12);
+  border-color: rgba(229, 228, 226, 0.5);
+}
+
+.rank-badge.rank-4 .verified-icon {
+  color: #e5e4e2;
+}
+
+.rank-badge.rank-5 {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(114, 232, 255, 0.18));
+  border-color: rgba(0, 229, 255, 0.55);
+}
+
+.rank-badge.rank-5 .verified-icon {
+  color: #00e5ff;
+}
+
+.rank-badge.rank-2 .rank-name,
+.rank-badge.rank-3 .rank-name,
+.rank-badge.rank-4 .rank-name,
+.rank-badge.rank-5 .rank-name {
+  color: #ffd700;
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.25);
+}
+
+.welcome-avatar {
+  flex-shrink: 0;
+  margin-left: 2rem;
+}
+
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, #00d4ff 0%, #0099cc 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #ffffff;
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+}
+
 /* Page Layout */
 .page-content {
   max-width: 800px;
