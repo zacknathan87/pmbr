@@ -39,14 +39,19 @@ window.Echo = new Echo({
     broadcaster: 'pusher',
     key: process.env.MIX_PUSHER_APP_KEY,
     wsHost: window.location.hostname,
-    // In the devcontainer, the app is exposed on a non-standard host port (8445 -> container :443).
+    // In devcontainer, app is exposed on a non-standard host port (8445 -> container :443).
     // Use the *actual* browser port so WebSocket connections go to the right place.
     // If no port is present (80/443), fall back to the protocol default.
     wsPort: window.location.port ? parseInt(window.location.port, 10) : 80,
     wssPort: window.location.port ? parseInt(window.location.port, 10) : 443,
-    // Laravel Websockets uses /laravel-websockets as the path prefix
+    // Laravel Websockets uses /laravel-websockets as a path prefix
     wsPath: '/laravel-websockets',
     disableStats: true,
     enabledTransports: ['wss'],
-    encrypted: true
+    encrypted: true,
+    auth: {
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    }
 });
