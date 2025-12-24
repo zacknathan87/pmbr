@@ -389,7 +389,6 @@ export default {
         // status change new game
         if (!firstLoad) {
           this.animateResultBox();
-          this.newGame = false;
         }
       }
 

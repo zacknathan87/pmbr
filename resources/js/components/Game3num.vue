@@ -228,6 +228,7 @@ export default {
     return {
       runningNo: 0,
       currentBall: 1,
+      newGame: false,
       animateBall1: true,
       animateBall2: false,
       animateBall3: false,
@@ -495,6 +496,7 @@ export default {
     gameData: function (newVal, oldVal) {
       // watch it
       this.initGame(false);
+      this.newGame = true;
     },
   },
 };
