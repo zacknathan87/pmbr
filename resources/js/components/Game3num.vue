@@ -848,6 +848,7 @@ export default {
   display: flex;
   flex-direction: column;
   background: #ffffff;
+  height: 100%;
 }
 
 .gameplay-content {
@@ -856,6 +857,7 @@ export default {
   overflow-x: visible;
   overflow-y: auto;
   min-height: 220px;
+  max-height: calc(100vh - 350px);
   height: auto;
   padding: 15px 15px 0;
   margin-bottom: 15px;
@@ -869,6 +871,10 @@ export default {
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   padding: 1.5rem;
+  flex-shrink: 0;
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
 }
 
 ul {
