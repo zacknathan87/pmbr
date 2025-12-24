@@ -576,8 +576,6 @@ export default {
 
 
 <style scoped>
-@import "../../sass/_variables";
-@import "../../sass/_utilities";
 
 .app-container {
   min-height: 100%;
