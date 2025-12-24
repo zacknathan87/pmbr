@@ -1,7 +1,7 @@
 import VueRouter from "vue-router";
 
-// Suppress VueRouter NavigationDuplicated errors globally (Vue 2 + VueRouter 3)
-// so redundant navigations (e.g. pushing to the current route) don't surface as
+// Suppress VueRouter NavigationDuplicated and NavigationRedirected errors globally (Vue 2 + VueRouter 3)
+// so redundant navigations (e.g. pushing to current route) and auth redirects don't surface as
 // "Uncaught (in promise)" in console.
 const originalPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location, onResolve, onReject) {
@@ -12,8 +12,10 @@ VueRouter.prototype.push = function push(location, onResolve, onReject) {
         if (
             err &&
             (err.name === "NavigationDuplicated" ||
+                err.name === "NavigationRedirected" ||
                 (typeof err.message === "string" &&
-                    err.message.includes("Avoided redundant navigation")))
+                    (err.message.includes("Avoided redundant navigation") ||
+                        err.message.includes("Redirected when going from"))))
         ) {
             return err;
         }
