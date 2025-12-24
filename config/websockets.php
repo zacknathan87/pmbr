@@ -49,10 +49,12 @@ return [
      * Leave this empty if you want to accept requests from all hosts.
      */
     'allowed_origins' => [
-        'https://pmbrplus.com',
-        'http://pmbrplus.com',
-        'https://pmbrplus.com:8443',
-        'http://pmbrplus.com:8443',
+        // 'https://pmbrplus.com',
+        // 'http://pmbrplus.com',
+        // 'https://pmbrplus.com:8443',
+        // 'http://pmbrplus.com:8443',
+        //  'https://pmbrplus.com:2096',
+        //  'http://pmbrplus.com:2096',
     ],
 
     /*
@@ -115,18 +117,18 @@ return [
          * in a separate file specified by local_pk.
          */
         'local_cert' => env('SSL_LOCAL_CERT', null),
-    
+
         /*
          * Path to local private key file on filesystem in case of separate files for
          * certificate (local_cert) and private key.
          */
         'local_pk' => env('SSL_LOCAL_KEY', null),
-    
+
         /*
          * Passphrase with which your local_cert file was encoded.
          */
         'passphrase' => null,
-    
+
         'verify_peer' => false,
     ],
     /*

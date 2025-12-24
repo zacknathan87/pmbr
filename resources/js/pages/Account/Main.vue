@@ -256,7 +256,7 @@ export default {
 .metric-value {
   font-size: 1.25rem;
   font-weight: 800;
-  color: #ffffff;
+  color: #000;
 }
 
 .metric-value.positive {
@@ -291,7 +291,7 @@ export default {
 }
 
 .rank-name {
-  color: #ffffff;
+  color: #000;
   font-weight: 700;
   font-size: 0.95rem;
   letter-spacing: 0.2px;

@@ -7,9 +7,9 @@
           <router-link ref="link" to="/" class="logo-link">
             <div class="logo-wrapper">
               <img src="/images/pmbr/logo-new.png" alt="PMBR Logo" class="logo-image">
-              <div class="logo-text">
+              <!--<div class="logo-text">
                 <span class="logo-main">PMBR</span>
-              </div>
+              </div> -->
             </div>
           </router-link>
         </div>
@@ -125,7 +125,7 @@ export default {
 }
 
 .logo-image {
-  width: 40px;
+  width: 60px;
   height: auto;
   object-fit: contain;
 }
