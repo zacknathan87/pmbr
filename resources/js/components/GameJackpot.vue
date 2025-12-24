@@ -607,8 +607,8 @@ export default {
     },
     gameData: function (newVal, oldVal) {
       // watch it
-      this.initGame(false);
       this.newGame = true;
+      this.initGame(false);
     },
   },
 };
