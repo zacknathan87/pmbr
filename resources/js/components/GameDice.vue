@@ -1,66 +1,70 @@
 <template>
-  <div class="page-content" style="display: flex">
+  <div class="page-content">
     <div v-if="!loading && hasGame" class="play-content">
-      <div class="result-section">
-        <div
-          class="result-box"
-          v-if="pastGame"
-          :class="{ 'tada animated': resultBoxAnimated }"
-        >
-          <div class="result-content">
-            <div>
-              {{ $t("app.past_result") }}: {{ $t("app.game_id") }} #{{
-                this.pastGame.id
-              }}
-            </div>
-            <div>{{ this.pastGameDateTime }}</div>
-            <div class="result-body" v-if="this.pastGame.no">
-              <div class="dice">{{ this.pastGame.no.split(",")[0] }}</div>
-              <span>+</span>
-              <div class="dice">{{ this.pastGame.no.split(",")[1] }}</div>
-              <span>+</span>
-              <div class="dice">{{ this.pastGame.no.split(",")[2] }}</div>
-              <span>=</span>
-              <div class="final-no">{{ this.pastGame.result_no }}</div>
+      <el-row :gutter="0">
+        <el-col :span="16" :xs="24">
+          <div
+            class="result-box"
+            v-if="pastGame"
+            :class="{ 'tada animated': resultBoxAnimated }"
+          >
+            <div class="result-content">
+              <div>
+                {{ $t("app.past_result") }}: {{ $t("app.game_id") }} #{{
+                  this.pastGame.id
+                }}
+              </div>
+              <div>{{ this.pastGameDateTime }}</div>
+              <div class="result-body" v-if="this.pastGame.no">
+                <div class="dice">{{ this.pastGame.no.split(",")[0] }}</div>
+                <span>+</span>
+                <div class="dice">{{ this.pastGame.no.split(",")[1] }}</div>
+                <span>+</span>
+                <div class="dice">{{ this.pastGame.no.split(",")[2] }}</div>
+                <span>=</span>
+                <div class="final-no">{{ this.pastGame.result_no }}</div>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="result-countdown">
-          <div class="countdown-box">
-            <countdown
-              :time="timerNextGame"
-              :transform="transform"
-              @end="onTimerNextGameEnd"
-            >
-              <template slot-scope="props">
-                <div class="countdown-label">
-                  {{ $t("app.next_game_time") }}
-                </div>
-                <div class="countdown-value">
-                  {{ props.minutes }}:{{ props.seconds }}
-                </div>
-              </template>
-            </countdown>
-          </div>
+        </el-col>
+        <el-col :span="8" :xs="24">
+          <div class="result-countdown">
+            <div class="countdown-box">
+              <countdown
+                :time="timerNextGame"
+                :transform="transform"
+                @end="onTimerNextGameEnd"
+              >
+                <template slot-scope="props">
+                  <div class="countdown-label">
+                    {{ $t("app.next_game_time") }}
+                  </div>
+                  <div class="countdown-value">
+                    {{ props.minutes }}:{{ props.seconds }}
+                  </div>
+                </template>
+              </countdown>
+            </div>
 
-          <div class="countdown-box betting">
-            <countdown
-              :time="timerBetTime"
-              :transform="transform"
-              @end="onTimerBetEnd"
-            >
-              <template slot-scope="props">
-                <div class="countdown-label">
-                  {{ $t("app.betting_time") }}
-                </div>
-                <div class="countdown-value">
-                  {{ props.minutes }}:{{ props.seconds }}
-                </div>
-              </template>
-            </countdown>
+            <div class="countdown-box betting">
+              <countdown
+                :time="timerBetTime"
+                :transform="transform"
+                @end="onTimerBetEnd"
+              >
+                <template slot-scope="props">
+                  <div class="countdown-label">
+                    {{ $t("app.betting_time") }}
+                  </div>
+                  <div class="countdown-value">
+                    {{ props.minutes }}:{{ props.seconds }}
+                  </div>
+                </template>
+              </countdown>
+            </div>
           </div>
-        </div>
-      </div>
+        </el-col>
+      </el-row>
 
       <div class="gameplay-box">
         <div class="gameplay-content">
@@ -75,23 +79,22 @@
             <div class="final-no headShake animated infinite">?</div>
           </div>
 
-          <div v-if="this.gameData.bet_type_group[0]">
+          <div v-if="betTypes.length">
             <el-checkbox-group class="bet-radio-case" v-model="form.pickedBet">
               <el-checkbox
                 class="bet-radio modern-checkbox"
-                v-for="(v, i) in this.gameData.bet_type_group[0].bet_type"
+                v-for="(v, i) in betTypes"
                 :key="i"
                 :label="v['id']"
                 name="bet_type_ids"
                 @change="handleBetChange(v)"
                 border
-                >
+              >
                 <div class="bet-option">
                   <span class="bet-name">{{ $t("app." + v["name_code"]) }}</span>
                   <span class="bet-odd">{{ v["odd"] }}</span>
                 </div>
-              </el-checkbox
-              >
+              </el-checkbox>
             </el-checkbox-group>
           </div>
         </div>
@@ -217,6 +220,7 @@ export default {
       loading: true,
       hasGame: false,
       newGame: false,
+      isFetchingNextGame: false,
       errorCode: 0,
       currentGameId: 0,
       betDisabled: false,
@@ -256,6 +260,20 @@ export default {
         pickedBet: { required },
       },
     };
+  },
+  computed: {
+    betTypes() {
+      try {
+        return (this.gameData &&
+          this.gameData.bet_type_group &&
+          this.gameData.bet_type_group[0] &&
+          this.gameData.bet_type_group[0].bet_type)
+          ? this.gameData.bet_type_group[0].bet_type
+          : [];
+      } catch (e) {
+        return [];
+      }
+    }
   },
   created() {},
   methods: {
@@ -389,6 +407,7 @@ export default {
         // status change new game
         if (!firstLoad) {
           this.animateResultBox();
+          this.newGame = false;
         }
       }
 
@@ -431,12 +450,37 @@ export default {
     },
 
     onTimerNextGameEnd() {
-      if (!this.newGame) {
-        this.$alert("Please refresh this page.", "Something when wrong!", {
-          confirmButtonText: "OK",
-          center: true,
-        });
+      // If a new game already arrived via parent/Echo (prop update), consume the flag and do nothing.
+      if (this.newGame) {
+        this.newGame = false;
+        return;
       }
+
+      // Otherwise, poll once to sync to the next game (fallback when Echo is late)
+      if (this.isFetchingNextGame) return;
+      this.isFetchingNextGame = true;
+      this.getCurrentGame()
+        .finally(() => {
+          this.isFetchingNextGame = false;
+        });
+    },
+
+    getCurrentGame() {
+      return axios
+        .get("/game/getGame/" + this.gameType + "/" + this.gameChannel)
+        .then((response) => {
+          if (response.data.status == 1) {
+            this.$emit('updateGameData', response.data.data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching game data:', error);
+          // Only show error if we can't fetch new game data
+          this.$alert("Please refresh this page.", "Something went wrong!", {
+            confirmButtonText: "OK",
+            center: true,
+          });
+        });
     },
   },
   mounted() {
@@ -463,8 +507,8 @@ export default {
     },
     gameData: function (newVal, oldVal) {
       // watch it
-      this.newGame = true;
       this.initGame(false);
+      this.newGame = true;
     },
   },
 };
@@ -491,32 +535,16 @@ export default {
   padding: 0 1rem;
 }
 
-.result-section {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-@media (max-width: 768px) {
-  .result-section {
-    flex-direction: column;
-    gap: 10px;
-  }
-}
-
 .result-box {
   background: #ffffff;
   border: 1px solid #e9ecef;
   border-radius: 8px;
-  padding: 20px;
+  padding: 1.5rem;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: row;
   color: #333333;
-  flex: 2;
-  min-width: 0;
 }
 
 .result-countdown {
@@ -525,26 +553,6 @@ export default {
   align-items: center;
   justify-content: center;
   text-align: center;
-  flex: 1;
-  min-width: 120px;
-}
-
-@media (max-width: 768px) {
-  .result-box {
-    flex: auto;
-    width: 100%;
-  }
-  
-  .result-countdown {
-    flex-direction: row;
-    width: 100%;
-    gap: 10px;
-  }
-  
-  .countdown-box {
-    flex: 1;
-    margin-bottom: 0 !important;
-  }
 }
 
 .result-content {
@@ -555,7 +563,6 @@ export default {
   align-self: stretch;
   justify-content: center;
   color: #333333;
-  min-width: 0;
 }
 
 .countdown-box {
@@ -563,11 +570,10 @@ export default {
   width: 100%;
   background: #00A3E0;
   color: #ffffff;
-  padding: 15px 10px;
+  padding: 1rem;
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 0.75rem;
   box-shadow: 0 2px 4px rgba(0, 163, 224, 0.2);
-  min-width: 0;
 }
 
 .countdown-box.betting {
@@ -599,28 +605,13 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 1rem 0;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 480px) {
-  .result-body {
-    gap: 0.25rem;
-    padding: 0.5rem 0;
-  }
+  gap: 0.75rem;
 }
 
 .result-body span {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #00d4ff;
-  flex-shrink: 0;
-}
-
-@media (max-width: 480px) {
-  .result-body span {
-    font-size: 1rem;
-  }
+  color: #00A3E0;
 }
 
 .dice {
@@ -638,16 +629,6 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-}
-
-@media (max-width: 480px) {
-  .dice {
-    width: 40px;
-    height: 40px;
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
 }
 
 .final-no {
@@ -664,16 +645,6 @@ export default {
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
-  flex-shrink: 0;
-}
-
-@media (max-width: 480px) {
-  .final-no {
-    width: 40px;
-    height: 40px;
-    padding: 0.5rem;
-    font-size: 1rem;
-  }
 }
 
 .page-content {
@@ -685,26 +656,190 @@ export default {
   flex-direction: column;
   padding-bottom: 0;
   width: 100%;
+  margin-top: 5px;
+}
+
+/* Ensure gameplay list is always visible */
+.gameplay-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.gameplay-content {
+  flex: 1 1 auto;
+  min-height: 220px;
+  overflow: visible;
+}
+
+/* Layout for bet options */
+.bet-radio-case {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.bet-radio {
+  margin: 4px !important;
+}
+
+/* Modern bet button (Element UI checkbox/radio) - White theme */
+.el-checkbox.modern-checkbox.is-bordered,
+.el-radio.modern-checkbox.is-bordered {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 0;
+  min-width: 108px;
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #333333;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.el-checkbox.modern-checkbox.is-bordered:hover,
+.el-radio.modern-checkbox.is-bordered:hover {
+  transform: translateY(-1px);
+  border-color: #00A3E0;
+  box-shadow: 0 4px 8px rgba(0, 163, 224, 0.15);
+}
+
+.el-checkbox.modern-checkbox.is-bordered.is-checked,
+.el-radio.modern-checkbox.is-bordered.is-checked {
+  background: #00A3E0;
+  border-color: #00A3E0;
+  color: #ffffff;
+}
+
+.el-checkbox.modern-checkbox .el-checkbox__label,
+.el-radio.modern-checkbox .el-radio__label {
+  padding: 10px 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Keep odds readable on selected buttons */
+.el-checkbox.modern-checkbox.is-bordered.is-checked .bet-odd,
+.el-radio.modern-checkbox.is-bordered.is-checked .bet-odd {
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .el-checkbox.modern-checkbox.is-bordered,
+  .el-radio.modern-checkbox.is-bordered {
+    min-width: 44%;
+    min-height: 48px;
+  }
+}
+
+/* Stacked label for bet option */
+.bet-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+.bet-name {
+  font-weight: 700;
+}
+.bet-odd {
+  color: #00A3E0;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.bet-title {
+  text-align: center;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #00A3E0;
+  font-size: 16px;
+}
+
+/* Mobile layout: stack columns and compact top section */
+@media only screen and (max-width: 600px) {
+  .result-box {
+    padding: 0.75rem;
+  }
+
+  .result-content {
+    padding: 0.25rem;
+    text-align: center;
+  }
+
+  .result-content div:first-child {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .result-content div:nth-child(2) {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .result-body {
+    padding: 0rem 0;
+    gap: 0.35rem;
+  }
+
+  .dice {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+    padding: 0.25rem;
+  }
+
+  .final-no {
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
+    padding: 0.25rem;
+  }
+
+  .result-countdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 6px;
+    margin-top: 6px;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+
+  .countdown-box {
+    margin-bottom: 0;
+    padding: 0.5rem;
+  }
+
+  .countdown-label {
+    font-size: 10px;
+    padding: 2px 0 0 0;
+    line-height: 1;
+  }
+
+  .countdown-value {
+    font-size: 18px;
+    line-height: 1.1;
+  }
 }
 
 .gameplay-box {
-  /* background: rgba(255, 255, 255, 0.2); */
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-        background: #fff;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.4));  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.4)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
-    
-    
+  background: #ffffff;
 }
 
 .gameplay-content {
   box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.1);
   flex: 1 1 auto;
-  overflow-x: auto;
-  height: 0px;
+  overflow-x: visible;
+  overflow-y: auto;
+  min-height: 220px;
+  height: auto;
   padding: 15px 15px 0;
   margin-bottom: 15px;
 }
@@ -713,9 +848,10 @@ export default {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
 }
 
 ul {
@@ -757,10 +893,8 @@ ul {
 
 .bet-title {
   text-align: center;
-  font-size: 20px;
-  margin-bottom: 15px;
-  color: #00A3E0;
-  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 5px;
 }
 
 .el-form-item {
@@ -771,18 +905,15 @@ ul {
   text-align: center;
   font-size: 18px;
   padding: 0 0 10px 0;
-  color: #00A3E0;
+  color: #ff375e;
   margin-top: -15px;
-  font-weight: 600;
 }
 
 .bet-closed {
   background: #6c757d;
   color: #fff;
   font-size: 18px;
-  height: 100%;
-  margin: 0 -15px;
-  height: 100px;
+  min-height: 90px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -790,11 +921,18 @@ ul {
 }
 
 .bet-info {
-  border-bottom: 1px solid #495057;
-  padding: 10px 15px;
-  margin-bottom: 15px;
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid #dee2e6;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  color: #333333;
+  background: #f8f9fa;
   border-radius: 6px;
+}
+</style>
+/* Modern-checkbox cleanup (hide native checkbox indicator for pill buttons) */
+<style lang="scss" scoped>
+.el-checkbox.modern-checkbox .el-checkbox__input,
+.el-checkbox.modern-checkbox .el-checkbox__inner {
+  display: none !important;
 }
 </style>

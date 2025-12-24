@@ -1,12 +1,11 @@
 <template>
-  <div class="page-content" style="display: flex">
+  <div class="page-content">
     <div v-if="!loading && hasGame" class="play-content">
       <el-row :gutter="0">
-        <el-col :span="16" style="height: 100%">
+        <el-col :span="16" :xs="24">
           <div
             class="result-box"
             v-if="pastGame"
-            style="height: 100%"
             :class="{ 'tada animated': resultBoxAnimated }"
           >
             <div class="result-content">
@@ -51,11 +50,14 @@
             </div>
           </div>
         </el-col>
-        <el-col :span="8" style="height: 100%">
+        <el-col :span="8" :xs="24">
           <div class="result-countdown">
             <div class="countdown-box">
-              <countdown :time="timerNextGame" :transform="transform" 
-                @end="onTimerNextGameEnd">
+              <countdown
+                :time="timerNextGame"
+                :transform="transform"
+                @end="onTimerNextGameEnd"
+              >
                 <template slot-scope="props">
                   <div class="countdown-label">
                     {{ $t("app.next_game_time") }}
@@ -89,7 +91,7 @@
 
       <div class="gameplay-box">
         <div class="gameplay-content">
-          <div v-if="this.gameData.bet_type_group">
+          <div v-if="betTypes.length">
             <div class="bet-title">{{ $t("app.choose_bets") }}</div>
             <div class="result-body" style="margin: -10px 0 25px">
               <div
@@ -155,7 +157,7 @@
             </div>
             <el-tabs tab-position="left">
               <el-tab-pane
-                v-for="(v, i) in this.gameData.bet_type_group"
+                v-for="(v, i) in betTypes"
                 :key="i"
                 :label="$t('app.' + v.name_code)"
               >
@@ -164,18 +166,19 @@
                   v-model="form.pickedBet"
                 >
                   <el-checkbox
-                    class="bet-radio"
+                    class="bet-radio modern-checkbox"
                     v-for="(v2, i) in v.bet_type"
                     :key="i"
                     :label="v2['id']"
                     name="bet_type_ids"
                     @change="handleBetChange(v)"
                     border
-                    >{{ $t("app." + v2["name_code"]) }}<br /><small
-                      class="odd"
-                      >{{ v2["odd"] }}</small
-                    ></el-checkbox
                   >
+                    <div class="bet-option">
+                      <span class="bet-name">{{ $t("app." + v2["name_code"]) }}</span>
+                      <span class="bet-odd">{{ v2["odd"] }}</span>
+                    </div>
+                  </el-checkbox>
                 </el-checkbox-group>
               </el-tab-pane>
             </el-tabs>
@@ -233,7 +236,7 @@
               <el-form-item label>
                 <el-button
                   style="width: 100%; text-transform: uppercase"
-                  type="primary"
+                  class="modern-bet-button"
                   @click="submit"
                   size="medium"
                   :disabled="formSubmitting"
@@ -242,6 +245,7 @@
                     class="fas fa-spinner fa-spin loading-spinner"
                     v-if="formSubmitting"
                   ></i>
+                  <i class="fas fa-chart-line" v-else></i>
                   {{ $t("app.bet") }}
                 </el-button>
               </el-form-item>
@@ -303,6 +307,7 @@ export default {
       runningNo: 0,
       currentBall: 1,
       newGame: false,
+      isFetchingNextGame: false,
       animateBall1: true,
       animateBall2: false,
       animateBall3: false,
@@ -354,6 +359,18 @@ export default {
         pickedBet: { required },
       },
     };
+  },
+  computed: {
+    betTypes() {
+      try {
+        return (this.gameData &&
+          this.gameData.bet_type_group)
+          ? this.gameData.bet_type_group
+          : [];
+      } catch (e) {
+        return [];
+      }
+    }
   },
   created() {},
   methods: {
@@ -488,6 +505,7 @@ export default {
         // status change new game
         if (!firstLoad) {
           this.animateResultBox();
+          this.newGame = false;
         }
       }
 
@@ -543,12 +561,37 @@ export default {
     },
 
     onTimerNextGameEnd() {
-      if (!this.newGame) {
-        this.$alert("Please refresh this page.", "Something when wrong!", {
-          confirmButtonText: "OK",
-          center: true,
-        });
+      // If a new game already arrived via parent/Echo (prop update), consume the flag and do nothing.
+      if (this.newGame) {
+        this.newGame = false;
+        return;
       }
+
+      // Otherwise, poll once to sync to the next game (fallback when Echo is late)
+      if (this.isFetchingNextGame) return;
+      this.isFetchingNextGame = true;
+      this.getCurrentGame()
+        .finally(() => {
+          this.isFetchingNextGame = false;
+        });
+    },
+
+    getCurrentGame() {
+      return axios
+        .get("/game/getGame/" + this.gameType + "/" + this.gameChannel)
+        .then((response) => {
+          if (response.data.status == 1) {
+            this.$emit('updateGameData', response.data.data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching game data:', error);
+          // Only show error if we can't fetch new game data
+          this.$alert("Please refresh this page.", "Something went wrong!", {
+            confirmButtonText: "OK",
+            center: true,
+          });
+        });
     },
   },
   mounted() {
@@ -578,26 +621,37 @@ export default {
     },
     gameData: function (newVal, oldVal) {
       // watch it
-      this.newGame = true;
       this.initGame(false);
+      this.newGame = true;
     },
   },
 };
 </script>
 
 
-
 <style scoped>
+@import "../../sass/_variables";
+@import "../../sass/_utilities";
+
 .app-container {
   min-height: 100%;
   height: 100%;
-  background: #fff;
+  background: #ffffff;
 }
+
+.page-content {
+  min-height: 100vh;
+  background: #ffffff;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
 .result-box {
   background: #ffffff;
   border: 1px solid #e9ecef;
   border-radius: 8px;
-  padding: 20px;
+  padding: 1.5rem;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   display: flex;
@@ -611,16 +665,16 @@ export default {
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 100%;
 }
 
 .result-content {
   flex: 2;
   display: flex;
-  padding: 5px;
+  padding: 1rem;
   flex-direction: column;
   align-self: stretch;
   justify-content: center;
+  color: #333333;
 }
 
 .countdown-box {
@@ -628,19 +682,10 @@ export default {
   width: 100%;
   background: #00A3E0;
   color: #ffffff;
-  padding: 15px 10px;
+  padding: 1rem;
   border-radius: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 0.75rem;
   box-shadow: 0 2px 4px rgba(0, 163, 224, 0.2);
-}
-
-.countdown-box > span {
-  display: flex;
-  flex: 1;
-  height: 100%;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .countdown-box.betting {
@@ -650,8 +695,8 @@ export default {
 }
 
 .countdown-label {
-  padding: 5px 0 5px 0;
-  font-size: 12px;
+  padding: 0.25rem 0 0.5rem 0;
+  font-size: 0.875rem;
   line-height: 1.2;
   font-weight: 600;
   text-transform: uppercase;
@@ -660,9 +705,10 @@ export default {
 }
 
 .countdown-value {
-  font-size: 24px;
+  font-size: 1.75rem;
   line-height: 1.2;
   font-weight: 700;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
 }
 
 .result-body {
@@ -670,12 +716,30 @@ export default {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 8px 0 0;
+  padding: 1rem 0;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
 .result-body span {
   margin: 0 7px;
+}
+
+.ball {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem;
+  color: #333333;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .final-no {
@@ -698,34 +762,35 @@ export default {
   flex-direction: column;
   padding-bottom: 0;
   width: 100%;
+  margin-top: 5px;
 }
 
 .gameplay-box {
-  /* background: rgba(255, 255, 255, 0.2); */
   flex-grow: 1;
   display: flex;
-  flex-direction: column;      background: #fff;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.4));  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.4)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    
-    
+  flex-direction: column;
+  background: #ffffff;
 }
 
 .gameplay-content {
   box-shadow: 0 -2px 3px 0 rgba(0, 0, 0, 0.1);
   flex: 1 1 auto;
-  overflow-x: auto;
-  height: 0px;
+  overflow-x: visible;
+  overflow-y: auto;
+  min-height: 220px;
+  height: auto;
   padding: 15px 15px 0;
   margin-bottom: 15px;
 }
 
 .gameplay-input-box {
   background: rgba(255, 255, 255, 0.95);
-  color: #333333;
-  height: 100px;
-  padding: 0 15px;
-  box-shadow: 0px -3px 15px 0px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid #e9ecef;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
 }
 
 ul {
@@ -807,26 +872,158 @@ ul {
   background: rgba(255, 255, 255, 0.9);
   border-radius: 6px;
 }
-</style>
 
-<style>
-.el-radio__input {
-  display: none !important;
+/* Layout for bet options */
+.bet-radio-case {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
 }
-.el-radio {
-  margin-right: 0;
+
+.bet-radio {
+  margin: 4px !important;
+}
+
+/* Modern bet button (Element UI checkbox/radio) - White theme */
+.el-checkbox.modern-checkbox.is-bordered,
+.el-radio.modern-checkbox.is-bordered {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
   border-radius: 8px;
-  border: 1px solid #e9ecef;
-  transition: all 0.3s ease;
+  padding: 0;
+  min-width: 108px;
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #333333;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.el-radio:hover {
+
+.el-checkbox.modern-checkbox.is-bordered:hover,
+.el-radio.modern-checkbox.is-bordered:hover {
+  transform: translateY(-1px);
   border-color: #00A3E0;
+  box-shadow: 0 4px 8px rgba(0, 163, 224, 0.15);
 }
-.el-radio.is-bordered.is-checked {
+
+.el-checkbox.modern-checkbox.is-bordered.is-checked,
+.el-radio.modern-checkbox.is-bordered.is-checked {
   background: linear-gradient(135deg, #00A3E0 0%, #0077b6 100%);
   border-color: #00A3E0;
-}
-.el-radio__input.is-checked + .el-radio__label {
   color: #ffffff;
+}
+
+.el-checkbox.modern-checkbox .el-checkbox__label,
+.el-radio.modern-checkbox .el-radio__label {
+  padding: 10px 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Keep odds readable on selected buttons */
+.el-checkbox.modern-checkbox.is-bordered.is-checked .bet-odd,
+.el-radio.modern-checkbox.is-bordered.is-checked .bet-odd {
+  color: #ffffff;
+}
+
+@media (max-width: 600px) {
+  .el-checkbox.modern-checkbox.is-bordered,
+  .el-radio.modern-checkbox.is-bordered {
+    min-width: 44%;
+    min-height: 48px;
+  }
+}
+
+/* Stacked label for bet option */
+.bet-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1.1;
+}
+.bet-name {
+  font-weight: 700;
+}
+.bet-odd {
+  color: #00A3E0;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+/* Mobile layout: stack columns and compact top section */
+@media only screen and (max-width: 600px) {
+  .result-box {
+    padding: 0.75rem;
+  }
+
+  .result-content {
+    padding: 0.25rem;
+    text-align: center;
+  }
+
+  .result-content div:first-child {
+    font-size: 12px;
+    margin-bottom: 2px;
+  }
+
+  .result-content div:nth-child(2) {
+    font-size: 11px;
+    margin-bottom: 4px;
+  }
+
+  .result-body {
+    padding: 0rem 0;
+    gap: 0.35rem;
+  }
+
+  .ball {
+    width: 28px;
+    height: 28px;
+    font-size: 12px;
+    padding: 0.25rem;
+  }
+
+  .final-no {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+    padding: 0.25rem;
+  }
+
+  .result-countdown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 6px;
+    margin-top: 6px;
+    width: 100%;
+    margin-bottom: 6px;
+  }
+
+  .countdown-box {
+    margin-bottom: 0;
+    padding: 0.5rem;
+  }
+
+  .countdown-label {
+    font-size: 10px;
+    padding: 2px 0 0 0;
+    line-height: 1;
+  }
+
+  .countdown-value {
+    font-size: 18px;
+    line-height: 1.1;
+  }
+}
+</style>
+/* Modern-checkbox cleanup (hide native checkbox indicator for pill buttons) */
+<style lang="scss" scoped>
+.el-checkbox.modern-checkbox .el-checkbox__input,
+.el-checkbox.modern-checkbox .el-checkbox__inner {
+  display: none !important;
 }
 </style>
