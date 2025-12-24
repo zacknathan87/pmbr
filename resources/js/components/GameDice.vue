@@ -1,70 +1,66 @@
 <template>
   <div class="page-content" style="display: flex">
     <div v-if="!loading && hasGame" class="play-content">
-      <el-row :gutter="0">
-        <el-col :span="16">
-          <div
-            class="result-box"
-            v-if="pastGame"
-            :class="{ 'tada animated': resultBoxAnimated }"
-          >
-            <div class="result-content">
-              <div>
-                {{ $t("app.past_result") }}: {{ $t("app.game_id") }} #{{
-                  this.pastGame.id
-                }}
-              </div>
-              <div>{{ this.pastGameDateTime }}</div>
-              <div class="result-body" v-if="this.pastGame.no">
-                <div class="dice">{{ this.pastGame.no.split(",")[0] }}</div>
-                <span>+</span>
-                <div class="dice">{{ this.pastGame.no.split(",")[1] }}</div>
-                <span>+</span>
-                <div class="dice">{{ this.pastGame.no.split(",")[2] }}</div>
-                <span>=</span>
-                <div class="final-no">{{ this.pastGame.result_no }}</div>
-              </div>
+      <div class="result-section">
+        <div
+          class="result-box"
+          v-if="pastGame"
+          :class="{ 'tada animated': resultBoxAnimated }"
+        >
+          <div class="result-content">
+            <div>
+              {{ $t("app.past_result") }}: {{ $t("app.game_id") }} #{{
+                this.pastGame.id
+              }}
+            </div>
+            <div>{{ this.pastGameDateTime }}</div>
+            <div class="result-body" v-if="this.pastGame.no">
+              <div class="dice">{{ this.pastGame.no.split(",")[0] }}</div>
+              <span>+</span>
+              <div class="dice">{{ this.pastGame.no.split(",")[1] }}</div>
+              <span>+</span>
+              <div class="dice">{{ this.pastGame.no.split(",")[2] }}</div>
+              <span>=</span>
+              <div class="final-no">{{ this.pastGame.result_no }}</div>
             </div>
           </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="result-countdown">
-            <div class="countdown-box">
-              <countdown
-                :time="timerNextGame"
-                :transform="transform"
-                @end="onTimerNextGameEnd"
-              >
-                <template slot-scope="props">
-                  <div class="countdown-label">
-                    {{ $t("app.next_game_time") }}
-                  </div>
-                  <div class="countdown-value">
-                    {{ props.minutes }}:{{ props.seconds }}
-                  </div>
-                </template>
-              </countdown>
-            </div>
+        </div>
+        <div class="result-countdown">
+          <div class="countdown-box">
+            <countdown
+              :time="timerNextGame"
+              :transform="transform"
+              @end="onTimerNextGameEnd"
+            >
+              <template slot-scope="props">
+                <div class="countdown-label">
+                  {{ $t("app.next_game_time") }}
+                </div>
+                <div class="countdown-value">
+                  {{ props.minutes }}:{{ props.seconds }}
+                </div>
+              </template>
+            </countdown>
+          </div>
 
-            <div class="countdown-box betting">
-              <countdown
-                :time="timerBetTime"
-                :transform="transform"
-                @end="onTimerBetEnd"
-              >
-                <template slot-scope="props">
-                  <div class="countdown-label">
-                    {{ $t("app.betting_time") }}
-                  </div>
-                  <div class="countdown-value">
-                    {{ props.minutes }}:{{ props.seconds }}
-                  </div>
-                </template>
-              </countdown>
-            </div>
+          <div class="countdown-box betting">
+            <countdown
+              :time="timerBetTime"
+              :transform="transform"
+              @end="onTimerBetEnd"
+            >
+              <template slot-scope="props">
+                <div class="countdown-label">
+                  {{ $t("app.betting_time") }}
+                </div>
+                <div class="countdown-value">
+                  {{ props.minutes }}:{{ props.seconds }}
+                </div>
+              </template>
+            </countdown>
           </div>
-        </el-col>
-      </el-row>
+        </div>
+      </div>
 
       <div class="gameplay-box">
         <div class="gameplay-content">
@@ -496,6 +492,20 @@ export default {
   padding: 0 1rem;
 }
 
+.result-section {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .result-section {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
 .result-box {
   background: #ffffff;
   border: 1px solid #e9ecef;
@@ -506,6 +516,8 @@ export default {
   display: flex;
   flex-direction: row;
   color: #333333;
+  flex: 2;
+  min-width: 0;
 }
 
 .result-countdown {
@@ -514,6 +526,26 @@ export default {
   align-items: center;
   justify-content: center;
   text-align: center;
+  flex: 1;
+  min-width: 120px;
+}
+
+@media (max-width: 768px) {
+  .result-box {
+    flex: auto;
+    width: 100%;
+  }
+  
+  .result-countdown {
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+  }
+  
+  .countdown-box {
+    flex: 1;
+    margin-bottom: 0 !important;
+  }
 }
 
 .result-content {
@@ -523,7 +555,8 @@ export default {
   flex-direction: column;
   align-self: stretch;
   justify-content: center;
-  color: #ffffff;
+  color: #333333;
+  min-width: 0;
 }
 
 .countdown-box {
@@ -535,6 +568,7 @@ export default {
   border-radius: 8px;
   margin-bottom: 10px;
   box-shadow: 0 2px 4px rgba(0, 163, 224, 0.2);
+  min-width: 0;
 }
 
 .countdown-box.betting {
@@ -566,13 +600,28 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 1rem 0;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 480px) {
+  .result-body {
+    gap: 0.25rem;
+    padding: 0.5rem 0;
+  }
 }
 
 .result-body span {
   font-size: 1.25rem;
   font-weight: 600;
   color: #00d4ff;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .result-body span {
+    font-size: 1rem;
+  }
 }
 
 .dice {
@@ -590,6 +639,16 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .dice {
+    width: 40px;
+    height: 40px;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
 }
 
 .final-no {
@@ -606,6 +665,16 @@ export default {
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .final-no {
+    width: 40px;
+    height: 40px;
+    padding: 0.5rem;
+    font-size: 1rem;
+  }
 }
 
 .page-content {
