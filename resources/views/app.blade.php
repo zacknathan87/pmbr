@@ -74,7 +74,7 @@
   </script>
 
 
-  <script src="{{ mix('js/app.js') }}?v={{ env('ASSET_V', 2) }}"></script>
+  <script defer src="{{ mix('js/app.js') }}?v={{ env('ASSET_V', 2) }}"></script>
 
 
 
