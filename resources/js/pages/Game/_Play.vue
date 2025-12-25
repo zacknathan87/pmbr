@@ -207,6 +207,10 @@ export default {
         });
     },
     connectChannel() {
+      // Initialize auth object if it doesn't exist
+      if (!Echo.connector.pusher.config.auth) {
+        Echo.connector.pusher.config.auth = { headers: {} };
+      }
       Echo.connector.pusher.config.auth.headers["Authorization"] =
         "Bearer " + this.$auth.token();
 
@@ -263,6 +267,10 @@ export default {
       });
     },
     connectBetChannel() {
+      // Initialize auth object if it doesn't exist
+      if (!Echo.connector.pusher.config.auth) {
+        Echo.connector.pusher.config.auth = { headers: {} };
+      }
       Echo.connector.pusher.config.auth.headers["Authorization"] =
         "Bearer " + this.$auth.token();
 
