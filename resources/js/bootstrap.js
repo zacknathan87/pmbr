@@ -48,10 +48,6 @@ window.Echo = new Echo({
     wsPath: '/laravel-websockets',
     disableStats: true,
     enabledTransports: ['wss'],
-    encrypted: true,
-    auth: {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        }
-    }
+    encrypted: true
+    // Note: Auth is handled via JWT headers in HTTP requests, not WebSocket auth
 });
