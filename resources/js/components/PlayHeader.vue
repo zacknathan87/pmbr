@@ -60,7 +60,7 @@
                     <i class="fas fa-coins"></i>
                     {{ item.amount }}
                   </div>
-                  <div>
+                  <div style="overflow: hidden; text-overflow: ellipsis;">
                     <span v-if="[2,3,4].includes(item.game_type_id) && item.bet_ref.split('_')[0] === 'num'" :class="'mini-ball ball-'+item.bet_ref.split('_')[1]"></span>
                     <span v-if="item.bet_ref != 'jackpot'"
                       ><span style="font-size: 13px"
@@ -209,6 +209,10 @@ export default {
   margin: 0 20px;
   flex: 1;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 /* Balance Display */
@@ -224,6 +228,8 @@ export default {
   display: flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .balance::before {
@@ -283,6 +289,8 @@ export default {
   padding: 24px !important;
   color: #333333 !important;
   background: #ffffff !important;
+  overflow-y: auto;
+  max-height: 70vh;
 }
 
 .el-dialog__footer {
@@ -312,12 +320,18 @@ export default {
   color: #666666;
   font-size: 0.85rem;
   margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .result-row div {
   color: #333333;
   font-size: 0.9rem;
   margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Status Tags */
